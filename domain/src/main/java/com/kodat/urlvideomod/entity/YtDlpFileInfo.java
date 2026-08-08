@@ -1,11 +1,13 @@
 package com.kodat.urlvideomod.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Setter;
 import lombok.Getter;
 
 @Setter
 @Getter
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class YtDlpFileInfo {
     private String id;
     private String title;
@@ -16,6 +18,10 @@ public class YtDlpFileInfo {
     private String uploader;
 
     public YtDlpFileInfo(){}
+
+    public YtDlpFileInfo(String webPageUrl) {
+        this.webPageUrl = webPageUrl;
+    }
 
     public YtDlpFileInfo(String id, String title, int duration, String webPageUrl, String thumbnail, String uploader) {
         this.id = id;
