@@ -26,6 +26,15 @@ public class DownloadFile {
         this.createdAt = LocalDateTime.now();
         this.status = FileStatus.WAITING;
         this.format = format;
-        this.filePath = Path.of("downloads", fileName).toString();
+        String extension = switch (format) {
+            case MP3 -> ".mp3";
+            case MP4, MP4_SUBTITLES, MP4_SUBTITLES_AUTO -> ".mp4";
+            default -> "";
+        };
+
+        this.filePath = Path.of(
+                "downloads",
+                fileName + extension
+        ).toString();
     }
 }

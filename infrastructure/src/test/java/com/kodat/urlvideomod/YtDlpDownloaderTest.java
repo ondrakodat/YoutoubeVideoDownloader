@@ -2,10 +2,12 @@ package com.kodat.urlvideomod;
 
 import com.kodat.urlvideomod.downloader.YtDlpDownloader;
 import com.kodat.urlvideomod.entity.YtDlpFileInfo;
+import com.kodat.urlvideomod.enums.TypeOfDownload;
 
 public class YtDlpDownloaderTest {
     public static void main() {
         YtDlpDownloader downloaderTest = new YtDlpDownloader();
+        /*
         YtDlpFileInfo info = downloaderTest.getFileInfo("https://www.youtube.com/watch?v=RMlit1075Jc");
 
         System.out.println("ID: " + info.getId());
@@ -14,6 +16,9 @@ public class YtDlpDownloaderTest {
         System.out.println("Uploader: " + info.getUploader());
         System.out.println("Thumbnail: " + info.getThumbnail());
         System.out.println("URL: " + info.getWebPageUrl());
+        */
+
+        downloaderTest.download("https://www.youtube.com/shorts/LwYIYCaW9bE", TypeOfDownload.MP4);
 
     }
 }
