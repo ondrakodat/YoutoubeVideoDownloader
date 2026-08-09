@@ -8,7 +8,6 @@ public class YtDlpDownloaderTest {
         YtDlpDownloader downloaderTest = new YtDlpDownloader();
         YtDlpFileInfo info = downloaderTest.getFileInfo("https://www.youtube.com/watch?v=RMlit1075Jc");
 
-
         System.out.println("ID: " + info.getId());
         System.out.println("Title: " + info.getTitle());
         System.out.println("Duration: " + info.getDuration());
