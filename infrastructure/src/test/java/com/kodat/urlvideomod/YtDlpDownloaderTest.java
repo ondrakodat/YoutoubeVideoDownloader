@@ -18,7 +18,7 @@ public class YtDlpDownloaderTest {
         System.out.println("URL: " + info.getWebPageUrl());
         */
 
-        downloaderTest.download("https://www.youtube.com/shorts/LwYIYCaW9bE", TypeOfDownload.MP4);
+        downloaderTest.download("https://www.youtube.com/watch?v=KPBqxZPvYS0", TypeOfDownload.MP3);
 
     }
 }

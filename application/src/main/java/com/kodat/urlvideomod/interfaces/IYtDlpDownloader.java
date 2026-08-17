@@ -4,7 +4,8 @@ import com.kodat.urlvideomod.entity.DownloadFile;
 import com.kodat.urlvideomod.entity.YtDlpFileInfo;
 import com.kodat.urlvideomod.enums.TypeOfDownload;
 
-public interface IDownloader {
+
+public interface IYtDlpDownloader {
     YtDlpFileInfo getFileInfo(String url);
     DownloadFile download (String url, TypeOfDownload format);
 }

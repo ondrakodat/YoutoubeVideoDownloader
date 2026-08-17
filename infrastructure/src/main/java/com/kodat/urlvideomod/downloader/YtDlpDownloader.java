@@ -2,17 +2,19 @@ package com.kodat.urlvideomod.downloader;
 
 import com.kodat.urlvideomod.entity.DownloadFile;
 import com.kodat.urlvideomod.entity.YtDlpFileInfo;
+import com.kodat.urlvideomod.enums.FileStatus;
 import com.kodat.urlvideomod.enums.TypeOfDownload;
-import com.kodat.urlvideomod.interfaces.IDownloader;
+import com.kodat.urlvideomod.interfaces.IYtDlpDownloader;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Files;
 
-
-public class YtDlpDownloader implements IDownloader {
+@Component
+public class YtDlpDownloader implements IYtDlpDownloader {
     private final ObjectMapper objectMapper = new ObjectMapper();
     @Override
     public YtDlpFileInfo getFileInfo(String url) {
@@ -35,10 +37,10 @@ public class YtDlpDownloader implements IDownloader {
     }
 
     @Override
-    public void download(String url, TypeOfDownload format) {
+    public DownloadFile download(String url, TypeOfDownload format) {
         if (format == TypeOfDownload.LIST_OF_URLS) {
             downloadList();
-            return;
+            return null;
         }
 
         YtDlpFileInfo info = getFileInfo(url);
@@ -48,7 +50,7 @@ public class YtDlpDownloader implements IDownloader {
                 info.getTitle(),
                 format
         );
-
+        file.setStatus(FileStatus.DOWNLOADING);
         ProcessBuilder processBuilder = null;
         switch (format){
             case TypeOfDownload.MP3:
@@ -95,13 +97,17 @@ public class YtDlpDownloader implements IDownloader {
             Files.createDirectories(Path.of("downloads"));
             Process process = processBuilder.start();
             int exitCode = process.waitFor();
-            if(exitCode == 0)
-            System.out.println(file.getFileName() + " byl stažen do " + file.getFilePath());
-            else
-            System.out.println("yt-dlp skončilo chybou " + exitCode);
+            if(exitCode == 0) {
+                file.setStatus(FileStatus.COMPLETED);
+                System.out.println(file.getFileName() + " byl stažen do " + file.getFilePath());
+            }else {
+                file.setStatus(FileStatus.FAILED);
+                System.out.println("yt-dlp skončilo chybou " + exitCode);
+            }
         }catch (IOException | InterruptedException e){
             throw new RuntimeException("Process could not start" + e);
         }
+        return file;
     }
 
     private void downloadList(){
