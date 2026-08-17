@@ -4,5 +4,5 @@ import com.kodat.urlvideomod.entity.DownloadFile;
 import com.kodat.urlvideomod.enums.TypeOfDownload;
 
 public interface IDownloadFileService {
-    CompletableFuture<DownloadFile> DownloadFile(String url, TypeOfDownload format );
+    CompletableFuture<DownloadFile> downloadFile(String url, TypeOfDownload format);
 }
