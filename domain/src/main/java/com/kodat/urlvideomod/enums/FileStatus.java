@@ -4,5 +4,7 @@ public enum FileStatus {
     WAITING,
     COMPLETED,
     FAILED,
-    DOWNLOADING
+    DOWNLOADING,
+    NOT_FOUND,
+    CANCELED
 }
