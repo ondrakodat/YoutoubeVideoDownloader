@@ -1,7 +1,7 @@
 package com.kodat.urlvideomod.services;
 
-
 import com.kodat.urlvideomod.entity.DownloadFile;
+import com.kodat.urlvideomod.entity.YtDlpFileInfo;
 import com.kodat.urlvideomod.enums.FileStatus;
 import com.kodat.urlvideomod.enums.TypeOfDownload;
 import com.kodat.urlvideomod.interfaces.IDownloadFileService;
@@ -14,45 +14,75 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
-public class DownloadFileService implements IDownloadFileService{
+public class DownloadFileService implements IDownloadFileService {
+
     private final IYtDlpDownloader downloader;
-    private final Map<UUID, CompletableFuture<DownloadFile>> downloads = new ConcurrentHashMap<>();
+
+    private final Map<UUID, DownloadFile> downloads =
+            new ConcurrentHashMap<>();
 
     public DownloadFileService(IYtDlpDownloader downloader) {
         this.downloader = downloader;
     }
 
     @Override
-    public CompletableFuture<DownloadFile> downloadFile(
-            String url,
-            TypeOfDownload format) {
-        return CompletableFuture
-                .supplyAsync(() -> downloader.download(url, format));
+    public UUID startDownload(String url, TypeOfDownload type) {
+
+        // Zatím vytvoříme soubor bez názvu z YouTube
+        DownloadFile file = new DownloadFile(
+                url,
+                "download_" + UUID.randomUUID(),
+                type
+        );
+
+        downloads.put(file.getId(), file);
+
+        CompletableFuture.runAsync(() -> {
+
+            try {
+
+                file.setStatus(FileStatus.DOWNLOADING);
+
+                // Získáme informace o videu
+                YtDlpFileInfo info = downloader.getFileInfo(url);
+
+                file.setFileName(info.getTitle());
+
+                // download začne až zde
+                downloader.download(file);
+
+            } catch (Exception e) {
+
+                file.setStatus(FileStatus.FAILED);
+
+                System.out.println(
+                        "Download failed: " + e.getMessage()
+                );
+            }
+
+        });
+
+        return file.getId();
     }
 
-    public UUID addDownload(CompletableFuture<DownloadFile> future){
-        UUID id = UUID.randomUUID();
-        downloads.put(id, future);
-        return id;
-    }
-
-    public CompletableFuture<DownloadFile> getDownload(UUID id){
+    @Override
+    public DownloadFile getDownload(UUID id) {
         return downloads.get(id);
     }
 
-    public FileStatus getDownloadStatus(UUID id){
-        CompletableFuture<DownloadFile> future = downloads.get(id);
-        if(future == null)
+    public FileStatus getDownloadStatus(UUID id) {
+
+        DownloadFile file = downloads.get(id);
+
+        if (file == null) {
             return FileStatus.NOT_FOUND;
-        if(future.isCancelled())
-            return FileStatus.CANCELED;
-        if(future.isDone())
-            return FileStatus.COMPLETED;
-        if(future.isCompletedExceptionally())
-            return FileStatus.FAILED;
-        return null;
+        }
+
+        return file.getStatus();
     }
 
+    public DownloadFile getDownloadInfo(UUID id) {
 
+        return downloads.get(id);
+    }
 }
-

@@ -20,18 +20,24 @@ public class DownloadController {
     }
 
     @PostMapping
-    public UUID download(@RequestParam String url, @RequestParam TypeOfDownload type){
-        CompletableFuture<DownloadFile> future = downloadFileService.downloadFile(url, type);
-        return downloadFileService.addDownload(future);
+    public UUID download(
+            @RequestParam String url,
+            @RequestParam TypeOfDownload type
+    ){
+        return downloadFileService.startDownload(url, type);
     }
 
     @GetMapping("/{id}")
-    public CompletableFuture<DownloadFile> checkDownloading(@PathVariable UUID id){
+    public DownloadFile checkDownloading(
+            @PathVariable UUID id
+    ){
         return downloadFileService.getDownload(id);
     }
 
     @GetMapping("/{id}/status")
-    public FileStatus getFileStatus(@PathVariable UUID id){
+    public FileStatus getFileStatus(
+            @PathVariable UUID id
+    ){
         return downloadFileService.getDownloadStatus(id);
     }
 }

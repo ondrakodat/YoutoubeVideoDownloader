@@ -1,0 +1,13 @@
+[33m6c43a47[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m HEAD@{0}: commit: Funkcni stahovani pred pridanim ostatnich funkci
+[33m32e9a76[m HEAD@{1}: checkout: moving from f832021b63a7f27467a28fcd5b73e367a8c772ba to main
+[33mf832021[m HEAD@{2}: commit: Funkční verze před přídáváním funkcionalit
+[33m32e9a76[m HEAD@{3}: checkout: moving from main to 32e9a76
+[33m32e9a76[m HEAD@{4}: commit: Litlle Gui
+[33m576052b[m HEAD@{5}: commit: Oprava toho co se pokazilo :/
+[33m5d23d2f[m HEAD@{6}: commit: Oprava toho co se pokazilo :/
+[33md37931a[m HEAD@{7}: commit: Videos are downloaded to directory /downloads. Working download done
+[33m796e9ed[m HEAD@{8}: commit: Added Yt-dlp format switch method
+[33mb83b1d0[m HEAD@{9}: commit: Added simple file info from YtDlp
+[33m78dc7d6[m HEAD@{10}: commit: Added Yt download feature yet TODO
+[33maa93a67[m HEAD@{11}: Branch: renamed refs/heads/master to refs/heads/main
+[33maa93a67[m HEAD@{13}: commit (initial): Initial commit
